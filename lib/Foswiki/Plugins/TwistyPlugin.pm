@@ -25,9 +25,9 @@ It has two major features:
 
 =cut
 
-package TWiki::Plugins::TwistyPlugin;
+package Foswiki::Plugins::TwistyPlugin;
 
-use TWiki::Func;
+use Foswiki::Func;
 use CGI::Cookie;
 use strict;
 
@@ -57,39 +57,39 @@ sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
 
     # check for Plugins.pm versions
-    if ( $TWiki::Plugins::VERSION < 1.1 ) {
-        TWiki::Func::writeWarning(
+    if ( $Foswiki::Plugins::VERSION < 1.1 ) {
+        Foswiki::Func::writeWarning(
             "Version mismatch between $pluginName and Plugins.pm");
         return 0;
     }
 
     _setDefaults();
 
-    $debug = TWiki::Func::getPluginPreferencesFlag("DEBUG");
+    $debug = Foswiki::Func::getPluginPreferencesFlag("DEBUG");
 
     $doneHeader  = 0;
     $twistyCount = 0;
 
-    $prefMode = TWiki::Func::getPreferencesValue('TWISTYMODE')
-      || TWiki::Func::getPluginPreferencesValue('TWISTYMODE')
+    $prefMode = Foswiki::Func::getPreferencesValue('TWISTYMODE')
+      || Foswiki::Func::getPluginPreferencesValue('TWISTYMODE')
       || $defaultMode;
-    $prefShowLink = TWiki::Func::getPreferencesValue('TWISTYSHOWLINK')
-      || TWiki::Func::getPluginPreferencesValue('TWISTYSHOWLINK')
+    $prefShowLink = Foswiki::Func::getPreferencesValue('TWISTYSHOWLINK')
+      || Foswiki::Func::getPluginPreferencesValue('TWISTYSHOWLINK')
       || $defaultShowLink;
-    $prefHideLink = TWiki::Func::getPreferencesValue('TWISTYHIDELINK')
-      || TWiki::Func::getPluginPreferencesValue('TWISTYHIDELINK')
+    $prefHideLink = Foswiki::Func::getPreferencesValue('TWISTYHIDELINK')
+      || Foswiki::Func::getPluginPreferencesValue('TWISTYHIDELINK')
       || $defaultHideLink;
-    $prefRemember = TWiki::Func::getPreferencesValue('TWISTYREMEMBER')
-      || TWiki::Func::getPluginPreferencesValue('TWISTYREMEMBER')
+    $prefRemember = Foswiki::Func::getPreferencesValue('TWISTYREMEMBER')
+      || Foswiki::Func::getPluginPreferencesValue('TWISTYREMEMBER')
       || $defaultRemember;
 
-    TWiki::Func::registerTagHandler( 'TWISTYSHOW',      \&_TWISTYSHOW );
-    TWiki::Func::registerTagHandler( 'TWISTYHIDE',      \&_TWISTYHIDE );
-    TWiki::Func::registerTagHandler( 'TWISTYBUTTON',    \&_TWISTYBUTTON );
-    TWiki::Func::registerTagHandler( 'TWISTY',          \&_TWISTY );
-    TWiki::Func::registerTagHandler( 'ENDTWISTY',       \&_ENDTWISTYTOGGLE );
-    TWiki::Func::registerTagHandler( 'TWISTYTOGGLE',    \&_TWISTYTOGGLE );
-    TWiki::Func::registerTagHandler( 'ENDTWISTYTOGGLE', \&_ENDTWISTYTOGGLE );
+    Foswiki::Func::registerTagHandler( 'TWISTYSHOW',      \&_TWISTYSHOW );
+    Foswiki::Func::registerTagHandler( 'TWISTYHIDE',      \&_TWISTYHIDE );
+    Foswiki::Func::registerTagHandler( 'TWISTYBUTTON',    \&_TWISTYBUTTON );
+    Foswiki::Func::registerTagHandler( 'TWISTY',          \&_TWISTY );
+    Foswiki::Func::registerTagHandler( 'ENDTWISTY',       \&_ENDTWISTYTOGGLE );
+    Foswiki::Func::registerTagHandler( 'TWISTYTOGGLE',    \&_TWISTYTOGGLE );
+    Foswiki::Func::registerTagHandler( 'ENDTWISTYTOGGLE', \&_ENDTWISTYTOGGLE );
 
     return 1;
 }
@@ -123,7 +123,7 @@ document.write(styleText);
 </script>
 EOF
 
-    TWiki::Func::addToHEAD( 'TWISTYPLUGIN_TWISTY', $header );
+    Foswiki::Func::addToHEAD( 'TWISTYPLUGIN_TWISTY', $header );
 }
 
 sub _TWISTYSHOW {
@@ -437,21 +437,21 @@ sub _wrapInContainerDivIfNoJavascripClose {
 sub _decodeFormatTokens {
     my $text = shift;
     return
-      defined(&TWiki::Func::decodeFormatTokens)
-      ? TWiki::Func::decodeFormatTokens($text)
+      defined(&Foswiki::Func::decodeFormatTokens)
+      ? Foswiki::Func::decodeFormatTokens($text)
       : _expandStandardEscapes($text);
 }
 
 =pod
 
-For TWiki versions that do not implement TWiki::Func::decodeFormatTokens.
+For TWiki versions that do not implement Foswiki::Func::decodeFormatTokens.
 
 =cut
 
 sub _expandStandardEscapes {
     my $text = shift;
     $text =~ s/\$n\(\)/\n/gos;    # expand '$n()' to new line
-    my $alpha = TWiki::Func::getRegularExpression('mixedAlpha');
+    my $alpha = Foswiki::Func::getRegularExpression('mixedAlpha');
     $text =~ s/\$n([^$alpha]|$)/\n$1/gos;    # expand '$n' to new line
     $text =~ s/\$nop(\(\))?//gos;      # remove filler, useful for nested search
     $text =~ s/\$quot(\(\))?/\"/gos;   # expand double quote
