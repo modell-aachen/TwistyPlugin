@@ -86,11 +86,11 @@ sub _setDefaults {
     $prefShowLink =
          Foswiki::Func::getPreferencesValue('TWISTYSHOWLINK')
       || Foswiki::Func::getPluginPreferencesValue('TWISTYSHOWLINK')
-      || '%MAKETEXT{"More..."}%';
+      || '%TMPL:P{"TwistyShowIcon"}%%MAKETEXT{"More..."}%';
     $prefHideLink =
          Foswiki::Func::getPreferencesValue('TWISTYHIDELINK')
       || Foswiki::Func::getPluginPreferencesValue('TWISTYHIDELINK')
-      || '%MAKETEXT{"Close"}%';
+      || '%TMPL:P{"TwistyHideIcon"}%%MAKETEXT{"Close"}%';
     $prefRemember =
          Foswiki::Func::getPreferencesValue('TWISTYREMEMBER')
       || Foswiki::Func::getPluginPreferencesValue('TWISTYREMEMBER')
